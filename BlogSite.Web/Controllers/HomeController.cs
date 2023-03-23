@@ -20,7 +20,7 @@ namespace BlogSite.Web.Controllers
             {
                 page = 1;
             }
-            int pageCount = 3;
+            int amountPerPage = 3;
 
             var db = new BlogDb(_connectionString);
             var vm = new HomePageViewModel();
@@ -29,13 +29,13 @@ namespace BlogSite.Web.Controllers
             {
                 vm.NewerPage = page - 1;
             }
-            int from = (page - 1) * pageCount;
-            int to = from + pageCount;
-            if (to < total)
+            int skip = (page - 1) * amountPerPage;
+            int lastOneOnCurrentPage = skip + amountPerPage;
+            if (lastOneOnCurrentPage < total)
             {
                 vm.OlderPage = page + 1;
             }
-            vm.Posts = db.GetPosts(from, pageCount);
+            vm.Posts = db.GetPosts(skip, amountPerPage);
 
             return View(vm);
         }
